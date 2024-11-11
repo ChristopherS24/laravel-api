@@ -43,12 +43,18 @@ class ProjectController extends Controller
         $newProject->title = $data['title'];
         $newProject->creation_date = $data['creation_date'];
         $newProject->author = $data['author'];
+        $newProject->cover = $data['cover'];
 
-        $newProject->cover = Storage::put('uploads', $data['cover']);
+        // $newProject->cover = Storage::put('uploads', $data['cover']);
+        if (isset($data['cover'])) {
+            $cover = Storage::disk('public')->put('uploads', $data['cover']);
+            $data['cover'] = $cover;
+        }
 
-        $newProject->save();
+        $newProject = Project::create($data);
+        //$newProject->save();
 
-        return redirect()->route('projects.show', $newProject->id);
+        return redirect()->route('projects.show', [ 'project' => $newProject->id]);
 
     }
 
@@ -77,7 +83,23 @@ class ProjectController extends Controller
 
         $project->update($data);
 
-        return redirect()->route('projects.show', $project->id); 
+        if (isset($data['cover'])){
+            if($project->cover) {
+                Storage::disk('public')->delete($project->cover);
+                $project->cover = null;
+            }
+
+            $coverPath = Storage::disk('public')->put('uploads', $data['cover']);
+            $data['cover'] = $coverPath;
+        }
+        else if (isset($data['remove_cover']) && $project->cover) {
+            Storage::disk('public')->delete($project->cover);
+            $project->cover = null;
+        }
+
+        $project->update($data);
+
+        return redirect()->route('projects.show', ['project' => $project->id]); 
 
     }
 
