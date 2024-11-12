@@ -30,7 +30,10 @@
                               <td> {{ $project->creation_date }} </td>
                               <td> {{ $project->author }} </td>
 
-                              <td> <img src=" {{ asset('storage/' . $project->cover) }} " alt=" {{ $project->title }} " style="width: 150px"> </td>
+                              <td> 
+                                <img src=" {{ asset('/storage/' . $project->cover) }} " alt=" {{ $project->title }} "  class="card-img-bottom"> 
+                                <img src="" {{ asset('storage/'. $project->cover) }} alt=" {{ $project->title }} " class="card-img-bottom">
+                              </td>
 
                             </tr>
 
