@@ -22,13 +22,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('api.')->group(function () { 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        return $request->user();
+    });
 
-//Route::resource('project', ProjectController::class);
+    //Route::resource('project', ProjectController::class);
 
-Route::get('/projects',[ProjectController::class, 'index'])->name('projects.index');
+   // Route::get('/projects',[ProjectController::class, 'index'])->name('projects.index');
 
+     Route::resource('projects', ProjectController::class)->only([
+         'index',
+         'show'
+     ]);
 });
 

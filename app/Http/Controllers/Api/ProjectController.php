@@ -30,9 +30,9 @@ class ProjectController extends Controller
         return response()->json([
             'success'=> true,
             'message' => "ok" ,
-            'data' => [
+            //'data' => [
                 'projects' => $projects
-            ],
+            //],
         ]);
     }
 }
